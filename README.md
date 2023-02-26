@@ -1,5 +1,6 @@
 Using Python 3.8.8 kernel
 
-dependencies need to be installed via PIP or similar
+pip install requirements.txt
 
-will add dependcy auto install later
+#creates the .exe file for the program
+pyinstaller --onefile password_vault.py -w
