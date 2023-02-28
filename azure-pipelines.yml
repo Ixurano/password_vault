@@ -22,17 +22,17 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      pyinstaller --onefile myscript.py -w
+      pyinstaller --onefile password_vault.py -w
   displayName: 'Build executable'
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'dist/myscript'
+    Contents: 'dist/password_vault'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy artifact'
 
 - task: PublishPipelineArtifact@0
   inputs:
-    artifactName: 'myscript'
+    artifactName: 'password_vault'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
