@@ -1,0 +1,38 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.9'
+  displayName: 'Use Python 3.9'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      python -m venv env
+      source env/bin/activate
+      pip install --upgrade pip
+      pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      pyinstaller --onefile myscript.py -w
+  displayName: 'Build executable'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: 'dist/myscript'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy artifact'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'myscript'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Publish artifact'
