@@ -3,6 +3,7 @@ import hashlib
 from tkinter import *
 from tkinter import simpledialog
 from functools import partial
+import tkinter
 import uuid
 import pyperclip
 import base64
@@ -234,7 +235,7 @@ def passwordVault():
     # destroys the login window if logged in to not overlapp
     for widget in window.winfo_children():
         widget.destroy()
-
+    
     def addEntry():
         text1 = "Website"
         text2 = "Username"
@@ -245,7 +246,6 @@ def passwordVault():
         username = encrypt(popUp(text2).encode(), encryptionKey)
         password = encrypt(popUp(text3).encode(), encryptionKey)
         note = encrypt(popUp(text4).encode(), encryptionKey)
-
         insert_fields = """
         INSERT INTO vault(website,username,password,note)
         VALUES(?, ?, ?, ?)
@@ -262,6 +262,11 @@ def passwordVault():
 
         passwordVault()
 
+    def copy(pswd):
+        window.clipboard_clear()
+        window.clipboard_append(pswd)
+        
+    
     window.geometry("900x350")
 
     lbl = Label(window, text="Password Vault")
@@ -276,10 +281,12 @@ def passwordVault():
     lbl.grid(row=2, column=1, padx=80)
     lbl = Label(window, text="Password")
     lbl.grid(row=2, column=2, padx=80)
+    
+    
     lbl = Label(window, text="Note")
     lbl.grid(row=2, column=3, padx=80)
 
-
+    
     cursor.execute("SELECT * FROM vault")
     if(cursor.fetchall() != None):
         i = 0
@@ -294,16 +301,21 @@ def passwordVault():
                 lbl1 = Label(window, text=(
                     decrypt(array[i][2],encryptionKey)), font=("Helvetica", 12))
                 lbl1.grid(column=1, row=i + 3)
+                #password
                 lbl1 = Label(window, text=(
                     decrypt(array[i][3], encryptionKey)), font=("Helvetica", 12))
                 lbl1.grid(column=2, row=i + 3)
+                #Copy-btn here
+                btnCopy = Button(window, text="Copy", command=copy(decrypt(array[i][3], encryptionKey)))
+                btnCopy.grid(column=3, row=i+3)
+                
                 lbl1 = Label(window, text=(
                     decrypt(array[i][4], encryptionKey)), font=("Helvetica", 12))
-                lbl1.grid(column=3, row=i + 3)
+                lbl1.grid(column=4, row=i + 3)
 
                 btn = Button(window, text="Delete",
                              command=partial(removeEntry, array[i][0]))
-                btn.grid(column=4, row=i+3, pady=10)
+                btn.grid(column=5, row=i+3, pady=10)
 
                 i = i+1
 
