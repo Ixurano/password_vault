@@ -12,6 +12,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.backends import default_backend
 from cryptography.fernet import Fernet
+from PIL import Image, ImageTk
 
 
 backend = default_backend()
@@ -270,10 +271,10 @@ def passwordVault():
     window.geometry("900x350")
 
     lbl = Label(window, text="Password Vault")
-    lbl.grid(column=1, columnspan=2)
+    lbl.grid(column=1, columnspan=4)
 
     btn = Button(window, text="+", command=addEntry)
-    btn.grid(column=1, columnspan=2)
+    btn.grid(column=1, columnspan=4)
 
     lbl = Label(window, text="Website")
     lbl.grid(row=2, column=0, padx=80)
@@ -286,6 +287,10 @@ def passwordVault():
     lbl = Label(window, text="Note")
     lbl.grid(row=2, column=4, padx=80)
 
+    #COPY ICON
+    img = Image.open("./images/copy_icon.png")
+    img_r = img.resize((20,20), Image.ANTIALIAS)
+    icon =  ImageTk.PhotoImage(img_r)
     
     cursor.execute("SELECT * FROM vault")
     if(cursor.fetchall() != None):
@@ -306,8 +311,15 @@ def passwordVault():
                     decrypt(array[i][3], encryptionKey)), font=("Helvetica", 12))
                 lbl1.grid(column=2, row=i + 3)
                 #Copy-btn here
-                btnCopy = Button(window, text="Copy", command=copy(decrypt(array[i][3], encryptionKey)))
+                
+                #copyImg = PhotoImage(file = r"./images/copy_logo.png")
+                #img_s = copyImg.subsample(1, 1)
+                
+                btnCopy = Button(window, text="Copy", image = icon, command=lambda password=decrypt(array[i][3], encryptionKey): copy(password))
+                btnCopy.image = icon
                 btnCopy.grid(column=3, row=i+3)
+                
+                
                 
                 lbl1 = Label(window, text=(
                     decrypt(array[i][4], encryptionKey)), font=("Helvetica", 12))
