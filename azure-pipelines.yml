@@ -40,7 +40,7 @@ steps:
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(Pipeline.Workspace)/password_vault'
-    azureSubscription: '08fc31e4-b54a-421f-bb17-613757673ba7'
+    azureSubscription: 'QocCf2HL+acByGocsbkilNUPq7vj3HYmW48kWkU8kPU0sFGlkklKdML+S6lfp5SfwGNvh64hDcP0+AStPqufkw=='
     Destination: 'AzureBlob'
     storage: 'devops2023passwordvault'
     ContainerName: 'passwordvault'
