@@ -36,11 +36,3 @@ steps:
     artifactName: 'password_vault'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
-
-- task: AzureFileCopy@4
-  inputs:
-    SourcePath: '$(Pipeline.Workspace)/password_vault'
-    azureSubscription: '08fc31e4-b54a-421f-bb17-613757673ba7'
-    Destination: 'AzureBlob'
-    storage: 'devops2023passwordvault'
-    ContainerName: 'passwordvault'
