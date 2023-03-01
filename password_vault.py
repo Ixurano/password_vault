@@ -284,7 +284,7 @@ def passwordVault():
     
     
     lbl = Label(window, text="Note")
-    lbl.grid(row=2, column=3, padx=80)
+    lbl.grid(row=2, column=4, padx=80)
 
     
     cursor.execute("SELECT * FROM vault")
