@@ -1,9 +1,9 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
-
+pool: MyPool
+  ##vmImage: ubuntu-latest
+  
 steps:
 - task: UsePythonVersion@0
   inputs:
