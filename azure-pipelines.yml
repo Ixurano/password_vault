@@ -17,6 +17,7 @@ steps:
       source env/bin/activate
       pip install --upgrade pip
       pip install -r requirements.txt
+      pip install pyinstaller
   displayName: 'Install dependencies'
 
 - task: CmdLine@2
