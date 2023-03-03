@@ -23,7 +23,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      pyinstaller --onefile password_vault.py -w
+       env/bin/pyinstaller --onefile password_vault.py -w
   displayName: 'Build executable'
 
 - task: CopyFiles@2
