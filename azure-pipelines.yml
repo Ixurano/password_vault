@@ -41,7 +41,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-       ls $(Build.ArtifactStagingDirectory)/dist
+       ls $(Build.ArtifactStagingDirectory)/dist/password_vault
   displayName: 'List artifact items'
 
 - task: GitHubRelease@1
