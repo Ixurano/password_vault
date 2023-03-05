@@ -41,7 +41,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-       ls $(Build.ArtifactStagingDirectory)
+       ls $(Build.ArtifactStagingDirectory)/dist
   displayName: 'List artifact items'
 
 - task: GitHubRelease@1
