@@ -49,9 +49,9 @@ steps:
   inputs:
     gitHubConnection: 'github connection 1'
     repositoryName: 'Ixurano/password_vault'
-    tagName: '$(Build.BuildNumber)'
-    releaseName: 'Release $(Build.BuildNumber)'
+    tagName: 'V.1.0.0'
     isDraft: false
+    action: 'edit'
     isPrerelease: false
     assets: '$(Build.ArtifactStagingDirectory)/dist/password_vault.exe'
   condition: succeeded()
