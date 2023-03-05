@@ -37,6 +37,13 @@ steps:
     artifactName: 'password_vault'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
+  
+- task: CmdLine@2
+  inputs:
+    script: |
+       Get-ChildItem $(Build.ArtifactStagingDirectory)
+  displayName: 'List artifact items'
+
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github connection 1'
