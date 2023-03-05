@@ -23,24 +23,36 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-       env/bin/pyinstaller --onefile --name password_vault password_vault.py -w
+       env/bin/pyinstaller --onefile password_vault.py -w
+       mv dist/password_vault dist/password_vault.exe
   displayName: 'Build executable'
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'dist/password_vault'
+    Contents: 'dist/password_vault.exe'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy artifact'
-
 
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: 'password_vault'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
-  
+
 - task: CmdLine@2
   inputs:
     script: |
-       ls $(Build.ArtifactStagingDirectory)/dist/password_vault
+       ls $(Build.ArtifactStagingDirectory)/dist/password_vault.exe
   displayName: 'List artifact items'
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github connection 1'
+    repositoryName: 'Ixurano/password_vault'
+    tagName: '$(Build.BuildNumber)'
+    releaseName: 'Release $(Build.BuildNumber)'
+    isDraft: false
+    isPrerelease: false
+    assets: '$(Build.ArtifactStagingDirectory)/dist/password_vault.exe'
+  condition: succeeded()
+  displayName: 'Create GitHub Release'
