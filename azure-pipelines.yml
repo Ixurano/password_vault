@@ -37,3 +37,12 @@ steps:
     artifactName: 'password_vault'
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github connection 1'
+    repositoryName: 'Ixurano/password_vault'
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: 'V.1.0.0'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
