@@ -23,12 +23,12 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-       env/bin/pyinstaller --onefile password_vault.py -w
+       env/bin/pyinstaller --onefile --name password_vault password_vault.py -w
   displayName: 'Build executable'
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'dist/password_vault/password_vault.exe' # <-- add .exe extension
+    Contents: 'dist/password_vault'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy artifact'
 
