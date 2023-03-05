@@ -28,9 +28,10 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'dist/password_vault'
+    Contents: 'dist/password_vault/password_vault.exe' # <-- add .exe extension
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy artifact'
+
 
 - task: PublishPipelineArtifact@0
   inputs:
@@ -43,13 +44,3 @@ steps:
     script: |
        ls $(Build.ArtifactStagingDirectory)/dist/password_vault
   displayName: 'List artifact items'
-
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'github connection 1'
-    repositoryName: 'Ixurano/password_vault'
-    action: 'edit'
-    target: '$(Build.SourceVersion)'
-    tag: 'V.1.0.0'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
