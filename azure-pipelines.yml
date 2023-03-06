@@ -1,9 +1,9 @@
 trigger:
 - master
 
-pool:
+pool: 
   vmImage: ubuntu-latest
-
+  
 steps:
 - task: UsePythonVersion@0
   inputs:
@@ -16,18 +16,20 @@ steps:
       python -m venv env
       source env/bin/activate
       pip install --upgrade pip
+      pip install pyinstaller
       pip install -r requirements.txt
   displayName: 'Install dependencies'
 
 - task: CmdLine@2
   inputs:
     script: |
-      pyinstaller --onefile password_vault.py -w
+       env/bin/pyinstaller --onefile password_vault.py -w
+       mv dist/password_vault dist/password_vault.exe
   displayName: 'Build executable'
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'dist/password_vault'
+    Contents: 'dist/password_vault.exe'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Copy artifact'
 
@@ -37,10 +39,19 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish artifact'
 
-- task: AzureFileCopy@4
+- task: CmdLine@2
   inputs:
-    SourcePath: '$(Pipeline.Workspace)/password_vault'
-    azureSubscription: '08fc31e4-b54a-421f-bb17-613757673ba7'
-    Destination: 'AzureBlob'
-    storage: 'devops2023passwordvault'
-    ContainerName: 'passwordvault'
+    script: |
+       ls $(Build.ArtifactStagingDirectory)/dist/password_vault.exe
+  displayName: 'List artifact items'
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github connection 1'
+    repositoryName: 'Ixurano/password_vault'
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: 'V.1.0.0'
+    assets: '$(Build.ArtifactStagingDirectory)/dist/password_vault.exe'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
